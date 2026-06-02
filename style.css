@@ -152,10 +152,11 @@ nav {
         display: none;
     }
     .container h1 {
-        font-size: 34px;
+        font-size: 28px;
     }
     .container p {
-        font-size: 15px;
+        font-size: 14px;
+        line-height: 1.5;
     }
     .container button {
         margin: 8px 5px;
