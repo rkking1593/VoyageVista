@@ -115,12 +115,34 @@ backToTop.addEventListener('click', () => {
 const loginModal = document.getElementById('login-modal');
 const loginLink = document.querySelector('.login a');
 
+// ── CHECK IF ALREADY LOGGED IN ──
+function checkLoginState() {
+    const user = JSON.parse(localStorage.getItem('vv_user'));
+    if (user) {
+        loginLink.textContent = `👤 ${user.name.split(' ')[0]}`;
+        loginLink.style.fontSize = '14px';
+    }
+}
+checkLoginState();
+
 // Open modal on Login click
 if (loginLink) {
     loginLink.addEventListener('click', (e) => {
         e.preventDefault();
+        const user = JSON.parse(localStorage.getItem('vv_user'));
+        if (user) {
+            // Already logged in — show profile toast
+            showToast(`👋 Welcome back, ${user.name.split(' ')[0]}!`);
+            return;
+        }
         loginModal.classList.add('active');
         navBar.classList.remove('open');
+
+        // Prefill email if remembered
+        const savedEmail = localStorage.getItem('vv_last_email');
+        if (savedEmail) {
+            document.getElementById('login-email').value = savedEmail;
+        }
     });
 }
 
@@ -144,7 +166,7 @@ document.getElementById('go-login').addEventListener('click', (e) => {
     document.getElementById('login-form').style.display = 'block';
 });
 
-// Login validation
+// ── LOGIN ──
 document.getElementById('login-btn').addEventListener('click', () => {
     const email = document.getElementById('login-email');
     const password = document.getElementById('login-password');
@@ -178,12 +200,24 @@ document.getElementById('login-btn').addEventListener('click', () => {
     }
 
     if (valid) {
-        showToast('✅ Logged in successfully!');
-        setTimeout(() => loginModal.classList.remove('active'), 1500);
+        // Check if user exists in localStorage
+        const savedUser = JSON.parse(localStorage.getItem('vv_user'));
+        if (savedUser && savedUser.email === email.value.trim()) {
+            // Save last email
+            localStorage.setItem('vv_last_email', email.value.trim());
+            // Update login state
+            localStorage.setItem('vv_logged_in', 'true');
+            loginLink.textContent = `👤 ${savedUser.name.split(' ')[0]}`;
+            showToast(`✅ Welcome back, ${savedUser.name.split(' ')[0]}!`);
+            setTimeout(() => loginModal.classList.remove('active'), 1500);
+        } else {
+            emailError.textContent = '⚠️ No account found. Please sign up first.';
+            email.classList.add('error');
+        }
     }
 });
 
-// Signup validation
+// ── SIGNUP ──
 document.getElementById('signup-btn').addEventListener('click', () => {
     const name = document.getElementById('signup-name');
     const email = document.getElementById('signup-email');
@@ -232,10 +266,77 @@ document.getElementById('signup-btn').addEventListener('click', () => {
     }
 
     if (valid) {
+        // Save user to localStorage
+        const userData = {
+            name: name.value.trim(),
+            email: email.value.trim(),
+            mobile: mobile.value.trim(),
+            password: password.value.trim(),
+            joinedDate: new Date().toLocaleDateString()
+        };
+        localStorage.setItem('vv_user', JSON.stringify(userData));
+        localStorage.setItem('vv_last_email', email.value.trim());
+
         showToast('🎉 Account created! Please login.');
         setTimeout(() => {
             document.getElementById('signup-form').style.display = 'none';
             document.getElementById('login-form').style.display = 'block';
+            document.getElementById('login-email').value = email.value.trim();
         }, 1500);
     }
+});
+
+// ── WISHLIST WITH LOCALSTORAGE ──
+function getWishlist() {
+    return JSON.parse(localStorage.getItem('vv_wishlist')) || [];
+}
+
+function saveWishlist(list) {
+    localStorage.setItem('vv_wishlist', JSON.stringify(list));
+}
+
+// Add wishlist hearts to destination cards
+document.querySelectorAll('.dest-card').forEach(card => {
+    const name = card.querySelector('h3')?.textContent.trim();
+    const wishlist = getWishlist();
+
+    const heartBtn = document.createElement('button');
+    heartBtn.className = 'wish-btn';
+    heartBtn.innerHTML = wishlist.includes(name) ? '❤️' : '🤍';
+    heartBtn.title = 'Add to Wishlist';
+    card.querySelector('.dest-info').appendChild(heartBtn);
+
+    heartBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const user = JSON.parse(localStorage.getItem('vv_user'));
+        if (!user) {
+            showToast('⚠️ Please login to save wishlist!');
+            loginModal.classList.add('active');
+            return;
+        }
+        let list = getWishlist();
+        if (list.includes(name)) {
+            list = list.filter(i => i !== name);
+            heartBtn.innerHTML = '🤍';
+            showToast(`💔 Removed from wishlist`);
+        } else {
+            list.push(name);
+            heartBtn.innerHTML = '❤️';
+            showToast(`❤️ ${name} saved to wishlist!`);
+        }
+        saveWishlist(list);
+    });
+});
+
+// ── RECENTLY VIEWED PACKAGES ──
+document.querySelectorAll('.package-card').forEach(card => {
+    card.addEventListener('click', () => {
+        const name = card.querySelector('h3')?.textContent.trim();
+        if (!name) return;
+        let recent = JSON.parse(localStorage.getItem('vv_recent')) || [];
+        recent = recent.filter(i => i !== name);
+        recent.unshift(name);
+        recent = recent.slice(0, 3); // Keep only last 3
+        localStorage.setItem('vv_recent', JSON.stringify(recent));
+    });
 });

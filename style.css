@@ -877,3 +877,16 @@ footer {
     font-weight: 600;
 }
 .auth-switch a:hover { text-decoration: underline; }
+
+/* ── WISHLIST BUTTON ── */
+.wish-btn {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    margin-top: 8px;
+    transition: transform 0.2s ease;
+}
+.wish-btn:hover {
+    transform: scale(1.2);
+}
