@@ -656,3 +656,120 @@ footer {
     }
 
 }
+
+/* ── HAMBURGER ── */
+.hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    z-index: 200;
+}
+.hamburger span {
+    display: block;
+    width: 25px;
+    height: 3px;
+    background: white;
+    border-radius: 3px;
+    transition: all 0.3s ease;
+}
+@media only screen and (max-width: 768px) {
+    .hamburger {
+        display: flex;
+    }
+    .navigation-bar.open {
+        display: block;
+        position: fixed;
+        top: 75px;
+        left: 0;
+        width: 100%;
+        background: rgba(10,10,10,0.99);
+        padding: 10px 0;
+        z-index: 999;
+    }
+    .navigation-bar.open ul {
+        flex-direction: column;
+        gap: 0;
+        align-items: center;
+    }
+    .navigation-bar.open ul li {
+        display: block;
+        width: 100%;
+        text-align: center;
+        padding: 0;
+        border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .navigation-bar.open ul li a {
+        display: block;
+        width: 100%;
+        padding: 14px 20px;
+        font-size: 18px;
+        color: white;
+        box-sizing: border-box;
+    }
+    .navigation-bar.open .login a{
+        display: inline-block;
+        background-color: orangered;
+        padding: 8px 24px;
+        margin-top: 5px;
+        border-radius: 8px;
+        color: white !important;
+    }
+}
+
+/* ── TOAST ── */
+#toast {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: #222;
+    color: white;
+    padding: 12px 24px;
+    border-radius: 50px;
+    font-size: 15px;
+    opacity: 0;
+    transition: all 0.4s ease;
+    z-index: 99999;
+    white-space: nowrap;
+}
+#toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+/* ── SCROLL REVEAL ── */
+.reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ── BACK TO TOP ── */
+#back-to-top {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background: orangered;
+    color: white;
+    border: none;
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    font-size: 20px;
+    cursor: pointer;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+    transition: all 0.3s ease;
+    z-index: 998;
+}
+#back-to-top:hover {
+    background: #c0390b;
+    transform: translateY(-3px);
+}
