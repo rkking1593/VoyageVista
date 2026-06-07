@@ -115,14 +115,49 @@ backToTop.addEventListener('click', () => {
 const loginModal = document.getElementById('login-modal');
 const loginLink = document.querySelector('.login a');
 
-// ── CHECK IF ALREADY LOGGED IN ──
 function checkLoginState() {
     const user = JSON.parse(localStorage.getItem('vv_user'));
-    if (user) {
-        loginLink.textContent = `👤 ${user.name.split(' ')[0]}`;
-        loginLink.style.fontSize = '14px';
+    const loggedIn = localStorage.getItem('vv_logged_in');
+    if (user && loggedIn === 'true') {
+        setupUserDropdown(user);
     }
 }
+
+function setupUserDropdown(user) {
+    // Wrap login link in dropdown
+    const loginLi = document.querySelector('.login');
+    loginLi.innerHTML = `
+        <div class="user-dropdown">
+            <a href="#" id="user-name-btn" style="background:none;color:white;font-size:14px;">
+                👤 ${user.name.split(' ')[0]}
+            </a>
+            <div class="dropdown-menu" id="dropdown-menu">
+                <a href="#" id="logout-btn">🚪 Log Out</a>
+            </div>
+        </div>
+    `;
+
+    document.getElementById('user-name-btn').addEventListener('click', (e) => {
+        e.preventDefault();
+        document.getElementById('dropdown-menu').classList.toggle('active');
+    });
+
+    document.getElementById('logout-btn').addEventListener('click', (e) => {
+        e.preventDefault();
+        localStorage.removeItem('vv_logged_in');
+        showToast('👋 Logged out successfully!');
+        setTimeout(() => location.reload(), 1500);
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', (e) => {
+        const dropdown = document.getElementById('dropdown-menu');
+        if (dropdown && !e.target.closest('.user-dropdown')) {
+            dropdown.classList.remove('active');
+        }
+    });
+}
+
 checkLoginState();
 
 // Open modal on Login click
@@ -130,15 +165,10 @@ if (loginLink) {
     loginLink.addEventListener('click', (e) => {
         e.preventDefault();
         const user = JSON.parse(localStorage.getItem('vv_user'));
-        if (user) {
-            // Already logged in — show profile toast
-            showToast(`👋 Welcome back, ${user.name.split(' ')[0]}!`);
-            return;
-        }
+        const loggedIn = localStorage.getItem('vv_logged_in');
+        if (user && loggedIn === 'true') return;
         loginModal.classList.add('active');
         navBar.classList.remove('open');
-
-        // Prefill email if remembered
         const savedEmail = localStorage.getItem('vv_last_email');
         if (savedEmail) {
             document.getElementById('login-email').value = savedEmail;
