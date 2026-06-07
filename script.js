@@ -110,3 +110,132 @@ window.addEventListener('scroll', () => {
 backToTop.addEventListener('click', () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 });
+
+// ── AUTH MODAL ──
+const loginModal = document.getElementById('login-modal');
+const loginLink = document.querySelector('.login a');
+
+// Open modal on Login click
+if (loginLink) {
+    loginLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        loginModal.classList.add('active');
+        navBar.classList.remove('open');
+    });
+}
+
+// Close modal on overlay click
+loginModal.addEventListener('click', (e) => {
+    if (e.target === loginModal) {
+        loginModal.classList.remove('active');
+    }
+});
+
+// Switch between login and signup
+document.getElementById('go-signup').addEventListener('click', (e) => {
+    e.preventDefault();
+    document.getElementById('login-form').style.display = 'none';
+    document.getElementById('signup-form').style.display = 'block';
+});
+
+document.getElementById('go-login').addEventListener('click', (e) => {
+    e.preventDefault();
+    document.getElementById('signup-form').style.display = 'none';
+    document.getElementById('login-form').style.display = 'block';
+});
+
+// Login validation
+document.getElementById('login-btn').addEventListener('click', () => {
+    const email = document.getElementById('login-email');
+    const password = document.getElementById('login-password');
+    const emailError = document.getElementById('email-error');
+    const passwordError = document.getElementById('password-error');
+    let valid = true;
+
+    emailError.textContent = '';
+    passwordError.textContent = '';
+    email.classList.remove('error');
+    password.classList.remove('error');
+
+    if (!email.value.trim()) {
+        emailError.textContent = '⚠️ Email cannot be empty.';
+        email.classList.add('error');
+        valid = false;
+    } else if (!email.value.includes('@')) {
+        emailError.textContent = '⚠️ Please enter a valid email.';
+        email.classList.add('error');
+        valid = false;
+    }
+
+    if (!password.value.trim()) {
+        passwordError.textContent = '⚠️ Password cannot be empty.';
+        password.classList.add('error');
+        valid = false;
+    } else if (password.value.length < 6) {
+        passwordError.textContent = '⚠️ Password must be at least 6 characters.';
+        password.classList.add('error');
+        valid = false;
+    }
+
+    if (valid) {
+        showToast('✅ Logged in successfully!');
+        setTimeout(() => loginModal.classList.remove('active'), 1500);
+    }
+});
+
+// Signup validation
+document.getElementById('signup-btn').addEventListener('click', () => {
+    const name = document.getElementById('signup-name');
+    const email = document.getElementById('signup-email');
+    const mobile = document.getElementById('signup-mobile');
+    const password = document.getElementById('signup-password');
+    const nameError = document.getElementById('name-error');
+    const emailError = document.getElementById('signup-email-error');
+    const mobileError = document.getElementById('mobile-error');
+    const passwordError = document.getElementById('signup-password-error');
+    let valid = true;
+
+    [nameError, emailError, mobileError, passwordError].forEach(e => e.textContent = '');
+    [name, email, mobile, password].forEach(i => i.classList.remove('error'));
+
+    if (!name.value.trim()) {
+        nameError.textContent = '⚠️ Full name cannot be empty.';
+        name.classList.add('error');
+        valid = false;
+    }
+    if (!email.value.trim()) {
+        emailError.textContent = '⚠️ Email cannot be empty.';
+        email.classList.add('error');
+        valid = false;
+    } else if (!email.value.includes('@')) {
+        emailError.textContent = '⚠️ Please enter a valid email.';
+        email.classList.add('error');
+        valid = false;
+    }
+    if (!mobile.value.trim()) {
+        mobileError.textContent = '⚠️ Mobile number cannot be empty.';
+        mobile.classList.add('error');
+        valid = false;
+    } else if (mobile.value.length < 10) {
+        mobileError.textContent = '⚠️ Please enter a valid 10-digit number.';
+        mobile.classList.add('error');
+        valid = false;
+    }
+    if (!password.value.trim()) {
+        passwordError.textContent = '⚠️ Password cannot be empty.';
+        password.classList.add('error');
+        valid = false;
+    } else if (password.value.length < 6) {
+        passwordError.textContent = '⚠️ Password must be at least 6 characters.';
+        password.classList.add('error');
+        valid = false;
+    }
+
+    if (valid) {
+        showToast('🎉 Account created! Please login.');
+        setTimeout(() => {
+            document.getElementById('signup-form').style.display = 'none';
+            document.getElementById('login-form').style.display = 'block';
+        }, 1500);
+    }
+});

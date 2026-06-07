@@ -773,3 +773,107 @@ footer {
     background: #c0390b;
     transform: translateY(-3px);
 }
+
+/* ── AUTH MODAL ── */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    z-index: 99999;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(4px);
+}
+.modal-overlay.active {
+    display: flex;
+}
+.auth-card {
+    background: white;
+    border-radius: 20px;
+    padding: 40px;
+    width: 100%;
+    max-width: 420px;
+    margin: 20px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    position: relative;
+    animation: popIn 0.3s ease;
+}
+.auth-logo {
+    text-align: center;
+    margin-bottom: 25px;
+}
+.auth-logo h2 {
+    font-size: 26px;
+    color: orangered;
+    letter-spacing: 2px;
+    margin-bottom: 6px;
+}
+.auth-logo p {
+    font-size: 13px;
+    color: #777;
+}
+.input-group {
+    margin-bottom: 18px;
+}
+.input-group label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 5px;
+}
+.input-group input {
+    width: 100%;
+    padding: 11px 15px;
+    border: 1.5px solid #ddd;
+    border-radius: 10px;
+    font-size: 14px;
+    font-family: 'Gill Sans', 'Gill Sans MT', 'Trebuchet MS', sans-serif;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+.input-group input:focus {
+    border-color: orangered;
+    box-shadow: 0 0 0 3px rgba(255,69,0,0.1);
+}
+.input-group input.error {
+    border-color: #e74c3c;
+}
+.error-msg {
+    display: block;
+    font-size: 12px;
+    color: #e74c3c;
+    margin-top: 4px;
+    min-height: 16px;
+}
+.auth-btn {
+    width: 100%;
+    padding: 13px;
+    background: orangered;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: 'Gill Sans', 'Gill Sans MT', 'Trebuchet MS', sans-serif;
+    transition: all 0.3s ease;
+    margin-top: 5px;
+}
+.auth-btn:hover {
+    background: #c0390b;
+    transform: translateY(-2px);
+}
+.auth-switch {
+    text-align: center;
+    margin-top: 18px;
+    font-size: 13px;
+    color: #666;
+}
+.auth-switch a {
+    color: orangered;
+    text-decoration: none;
+    font-weight: 600;
+}
+.auth-switch a:hover { text-decoration: underline; }
