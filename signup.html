@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account – VoyageVista</title>
+    <link rel="stylesheet" href="auth.css" />
+</head>
+<body>
+    <div class="auth-page">
+        <div class="auth-card">
+            <div class="auth-logo">
+                <h2>VoyageVista</h2>
+                <p>Create your account and start exploring!</p>
+            </div>
+            <div class="auth-form">
+                <div class="input-group">
+                    <label>Full Name</label>
+                    <input type="text" id="signup-name" placeholder="Enter your full name" />
+                    <span class="error-msg" id="name-error"></span>
+                </div>
+                <div class="input-group">
+                    <label>Email Address</label>
+                    <input type="email" id="signup-email" placeholder="Enter your email" />
+                    <span class="error-msg" id="signup-email-error"></span>
+                </div>
+                <div class="input-group">
+                    <label>Mobile Number</label>
+                    <input type="tel" id="signup-mobile" placeholder="Enter your mobile number" />
+                    <span class="error-msg" id="mobile-error"></span>
+                </div>
+                <div class="input-group">
+                    <label>Create Password</label>
+                    <input type="password" id="signup-password" placeholder="Create a strong password" />
+                    <span class="error-msg" id="signup-password-error"></span>
+                </div>
+                <button class="auth-btn" id="signup-btn">Create Account</button>
+                <p class="auth-switch">Already have an account? <a href="login.html">Login</a></p>
+            </div>
+        </div>
+    </div>
+    <script src="auth.js"></script>
+</body>
+</html>
