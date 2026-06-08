@@ -927,3 +927,7 @@ footer {
     background: #fff0ed !important;
     color: orangered !important;
 }
+
+#user-name-btn:hover {
+    background-color: #c0390b !important;
+}
