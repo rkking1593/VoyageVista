@@ -128,7 +128,7 @@ function setupUserDropdown(user) {
     const loginLi = document.querySelector('.login');
     loginLi.innerHTML = `
         <div class="user-dropdown">
-            <a href="#" id="user-name-btn" style="background:none;color:white;font-size:14px;">
+            <a href="#" id="user-name-btn" style="background-color:orangered;color:white;font-size:14px;padding:8px 16px;border-radius:8px;">
                 👤 ${user.name.split(' ')[0]}
             </a>
             <div class="dropdown-menu" id="dropdown-menu">
