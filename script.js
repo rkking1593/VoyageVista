@@ -233,13 +233,13 @@ document.getElementById('login-btn').addEventListener('click', () => {
         // Check if user exists in localStorage
         const savedUser = JSON.parse(localStorage.getItem('vv_user'));
         if (savedUser && savedUser.email === email.value.trim()) {
-            // Save last email
             localStorage.setItem('vv_last_email', email.value.trim());
-            // Update login state
             localStorage.setItem('vv_logged_in', 'true');
-            loginLink.textContent = `👤 ${savedUser.name.split(' ')[0]}`;
             showToast(`✅ Welcome back, ${savedUser.name.split(' ')[0]}!`);
-            setTimeout(() => loginModal.classList.remove('active'), 1500);
+            setTimeout(() => {
+                loginModal.classList.remove('active');
+                setupUserDropdown(savedUser);
+            }, 1500);
         } else {
             emailError.textContent = '⚠️ No account found. Please sign up first.';
             email.classList.add('error');
